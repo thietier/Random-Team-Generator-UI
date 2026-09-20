@@ -1,8 +1,19 @@
 import os
 
+
+def data_directory():
+        app_data = os.environ.get("APPDATA") #reads windows APPDATA variable
+        if not app_data:
+                app_data = os.path.expanduser("~/.config") #if it doesn't exist, provide a fallback location in the 
+                #current user's home folder
+        data_directory = os.path.join(app_data, "Debate Pair Software") #combine the folder with application name
+        os.makedirs(data_directory, exist_ok=True) #creates directory if it does not exist
+        return data_directory
+
 def banned_pairs_path():
-        project_dir = os.path.dirname(os.path.abspath(__file__))
-        return os.path.join(project_dir, "banned_pairs.json")
+        #json stored in appdata rather than in the executable to keep user data outside the pyinstaller 
+        #bundle and its temporary extraction folder
+        return os.path.join(data_directory(), "banned_pairs.json")
 
 def is_valid_banned_pair(pair):
         if not isinstance(pair, (list, tuple)) or len(pair) != 2: #check if the given pair is a list or tuple of length 2

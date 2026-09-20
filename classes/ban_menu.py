@@ -8,7 +8,7 @@ if __package__ in (None, ""):
 
 import customtkinter as ctk
 import json
-from functions import utility
+from functions import utility_exe as utility
 
 class ban_menu(ctk.CTkToplevel):
         def __init__(self,parent, *args,**kwargs):

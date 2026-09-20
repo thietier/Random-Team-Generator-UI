@@ -7,9 +7,9 @@ if __package__ in (None, ""):
         sys.path.insert(0, project_root)
 
 import customtkinter as ctk
-from classes import ban_menu
-from classes.generated_teams import generated_teams
-from functions import utility
+from classes import ban_menu_exe as ban_menu
+from classes.generated_teams_exe import generated_teams
+from functions import utility_exe as utility
 
 class name_options_frame(ctk.CTkFrame):
     def __init__(self,parent, controller, *args, **kwargs):

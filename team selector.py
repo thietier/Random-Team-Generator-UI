@@ -1,15 +1,15 @@
-import os
-import sys
+import os #operating system module to get the path of the current file
+import sys #system module to add the current file path to the system path for importing other files
 
-if __package__ in (None, ""):
-    project_root = os.path.dirname(os.path.abspath(__file__))
-    if project_root not in sys.path:
-        sys.path.insert(0, project_root)
+ROOT = os.path.dirname(os.path.abspath(__file__)) #abspath returns the absolute path of the file. 
+#argument of dirname is the path of the current file. dirname strips of the filename for just the folder name.
+if ROOT not in sys.path: #if the current file path is not in the system path, add it to the system path    
+    sys.path.insert(0, ROOT) 
 
 import customtkinter as ctk
-from classes import ban_menu_exe as ban_menu
-from classes import team_frame_exe as team_frame
-from classes import name_frame_exe as name_frame
+import ban_menu_exe as ban_menu
+import team_frame_exe as team_frame
+import name_frame_exe as name_frame
 
 #the design of the randomisation algorithm with respect to bannings prioritises speed over an ideal solution- let an upper limit on the number of bannings
 #be 3-4 per person in general for a group of 30

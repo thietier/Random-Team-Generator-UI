@@ -9,9 +9,10 @@ if __package__ in (None, ""):
 import customtkinter as ctk
 import json
 import random
+from tkinter import messagebox
 
-from functions import utility
-from functions import generate_functions
+from functions import utility_exe as utility
+from functions import generate_functions_exe as generate_functions
 
 
 class generated_teams(ctk.CTkToplevel):
@@ -59,10 +60,7 @@ class generated_teams(ctk.CTkToplevel):
             self.ban_pair_list = [pair for pair in self.ban_pair_list if utility.is_valid_banned_pair(pair)]
         except (json.JSONDecodeError, OSError):
             self.ban_pair_list = []
-            json_error_popup=ctk.CTkToplevel(self)
-            json_error_text=ctk.CTkTextbox(json_error_popup, text=f"Banned pairs could not be loaded. Proceeding without them.")
-            json_error_text.pack(fill="both", expand=True)
-
+            messagebox.showerror("Banned Pairs Error","Banned pairs could not be loaded. Proceeding without them.",parent=self)
 
         #set up a loop with starting points and finding the best one, terminating if a conflict-less solution is found
         best_minimum=None
@@ -115,15 +113,14 @@ class generated_teams(ctk.CTkToplevel):
             self.display_team[team_number].grid(column=0, row=team_number, sticky="ew", padx=10, pady=5)
 
         #let the user know if there are unassigned names (if the space on teams is less than number of names). cant use len for name_list as it contains None entries
-        unassigned_members=sum(name is not None for name in self.controller.name_list)-sum(self.controller.number_on_team_list[:self.controller.number_of_teams.get()])
-        if unassigned_members>0:
-            error_popup=ctk.CTkToplevel(self)
-            error_text=ctk.CTkLabel(error_popup, text=f"There are {unassigned_members} unassigned names due to insufficient team space.")
-            error_text.pack(fill="both", expand=True)
+        unnassigned_members=sum(self.controller.number_on_team_list[index] for index in range(self.controller.number_of_teams.get()))-sum(name is not None for name in self.controller.name_list)
+        if unnassigned_members<0:
+            #keeps the message at the top until it is dismisses
+            messagebox.showwarning("Unassigned Names",f"There are {-unnassigned_members} unassigned names due to insufficient team space.",parent=self,)
 
 class team_display(ctk.CTkFrame):
-    def __init__(self, parent, team_members_list, team_number, team_name, fg_color="transparent", border_width=2, border_color="#4133AB"):
-        super().__init__(parent , fg_color=fg_color, border_width=border_width, border_color=border_color)
+    def __init__(self, parent, team_members_list, team_number, team_name, fg_color="transparent", border_width=2, border_color="#4133AB", height=80):
+        super().__init__(parent , fg_color=fg_color, border_width=border_width, border_color=border_color, height=height)
 
         self.columnconfigure((0,1), weight=1)
         self.rowconfigure(0, weight=1)
@@ -134,9 +131,9 @@ class team_display(ctk.CTkFrame):
         self.team_name_label=ctk.CTkLabel(self, text=f"{team_name}", border_width=2, border_color="#4133AB", font=big_font)
         self.team_name_label.grid(row=0, column=0, padx=(10,5), pady=10, sticky="nsew")
 
-        self.member_names_label=ctk.CTkLabel(self, border_width=2, border_color="#4133AB", font=name_font)
-        self.member_names_box.grid(row=0, column=1, padx=(5,10), pady=10, sticky="nsew")
         member_names = team_members_list[team_number]
+        self.member_names_box=ctk.CTkTextbox(self, border_width=2, border_color="#4133AB", font=name_font)
+        self.member_names_box.grid(row=0, column=1, padx=(5,10), pady=10, sticky="nsew")
         if member_names:
-            self.member_names_box.insert("1.0", "\n".join(member_names)) #inserts the member names list as a string, each item separated by a newline
+            self.member_names_box.insert("1.0", "\n".join(member_names))
         self.member_names_box.configure(state="disabled")

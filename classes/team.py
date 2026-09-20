@@ -7,7 +7,7 @@ if __package__ in (None, ""):
         sys.path.insert(0, project_root)
 
 import customtkinter as ctk
-from functions import utility
+from functions import utility_exe as utility
 
 class Team(ctk.CTkFrame):
             def __init__(self,parent,controller, team_number, *args, **kwargs):
