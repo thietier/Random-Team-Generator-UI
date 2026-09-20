@@ -18,7 +18,7 @@ ctk.set_default_color_theme("dark-blue")
 root=ctk.CTk()
 root.geometry("1200x600")
 
-root.title("Debate Pair Randomiser")
+root.title("Team Randomiser")
 root.state("zoomed")
 root.resizable(False,False)
 root.grid_columnconfigure((0,1,2,3,4),weight=1)
