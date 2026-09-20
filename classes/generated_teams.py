@@ -11,8 +11,8 @@ import json
 import random
 from tkinter import messagebox
 
-from functions import utility_exe as utility
-from functions import generate_functions_exe as generate_functions
+from functions import utility
+from functions import generate_functions
 
 
 class generated_teams(ctk.CTkToplevel):

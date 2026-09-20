@@ -7,7 +7,7 @@ if __package__ in (None, ""):
     if project_root not in sys.path:
         sys.path.insert(0, project_root)
 
-from functions import utility_exe as utility
+from functions import utility
 
 
 def greedy_initialisation(ban_pair_list, name_list, team_members_list, number_of_teams, number_on_team):
